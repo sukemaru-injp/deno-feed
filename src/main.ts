@@ -17,11 +17,12 @@ type RetrieveTarget = {
 };
 
 const retrieveTargets: readonly RetrieveTarget[] = [
-  { title: "Zenn Ai feed", url: "https://zenn.dev/topics/ai/feed" },
+  { title: "Zenn `Ai` feed", url: "https://zenn.dev/topics/ai/feed" },
 ];
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
-if (import.meta.main) {
+const scheduledAt = Deno.env.get("SCHEDULED_AT") ?? "0 22 * * *";
+
+Deno.cron("rss feed notification", scheduledAt, async () => {
   const res = await fetchRssFeeds("https://zenn.dev/topics/ai/feed");
   console.log(res);
 
@@ -30,15 +31,14 @@ if (import.meta.main) {
   if (slackWebhookUrl) {
     res.match(async (v) => {
       const sendMessage = new SendMessageImpl(slackWebhookUrl);
-      const message = v.map(createMessage).join("");
+      const message = v.map(createMessage).join("\n");
 
       await sendMessage.run(message);
+      console.log("Completed!");
     }, ({ message }) => {
       console.error(message);
     });
-
-    console.log("SLACK_WEB_HOOK_URL is configured");
   } else {
     console.log("failed: SLACK_WEB_HOOK_URL is not configured in .env file");
   }
-}
+});

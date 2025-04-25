@@ -1,7 +1,7 @@
 {
   "tasks": {
     "dev": "deno run --env main.ts",
-    "run": "deno --allow-read --allow-env --allow-net --allow-sys src/main.ts"
+    "run": "deno --unstable-cron --allow-read --allow-env --allow-net --allow-sys src/main.ts"
   },
   "imports": {
     "@slack/webhook": "npm:@slack/webhook@^7.0.5",
