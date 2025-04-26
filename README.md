@@ -17,6 +17,11 @@ Format
 $ deno fmt
 ```
 
+## How to use
+
+1. deploy to [deno deploy](https://deno.com/deploy)
+2. setup environment variables
+
 ## License
 Better Upload is licensed under the MIT License. You are free to do whatever you want with it.
 
